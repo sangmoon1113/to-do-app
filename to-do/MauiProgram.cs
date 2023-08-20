@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Radzen;
 using to_do.Data;
+using to_do.Layers._4.Infrastructure;
 
 namespace to_do;
 public static class MauiProgram
@@ -27,6 +28,7 @@ public static class MauiProgram
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddScoped<TooltipService>();
         builder.Services.AddScoped<ContextMenuService>();
+        builder.Services.AddDbContextFactory<AppDbContext>();
 
         return builder.Build();
     }
