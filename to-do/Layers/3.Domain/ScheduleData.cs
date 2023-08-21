@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace to_do.Data;
-public class AppointmentData
+public class ScheduleData
 {
     public DateTime Start { get; set; }
 
@@ -17,7 +17,7 @@ public class AppointmentData
 
     public override bool Equals(object obj)
     {
-        return obj is AppointmentData data &&
+        return obj is ScheduleData data &&
                Start == data.Start &&
                End == data.End &&
                Text == data.Text &&

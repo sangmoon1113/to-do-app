@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace to_do.Layers._4.Infrastructure;
 public class AppDbContext : DbContext
 {
-    public DbSet<AppointmentEntity> Appointments
+    public DbSet<AppointmentEntity> Schedules
     {
         get; set; 
     }

@@ -6,8 +6,8 @@
 @inject DialogService DialogService
 @inject IDbContextFactory<AppDbContext> DbFactory
 
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Data.AppointmentData" Data=@appointments StartProperty="Start" EndProperty="End"
-    TextProperty="Text" SelectedIndex="2"
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Data.ScheduleData" Data=@appointments StartProperty="Start" EndProperty="End"
+    TextProperty="Text" SelectedIndex="0" 
     SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
     <RadzenMonthView />
 </RadzenScheduler>
@@ -15,7 +15,7 @@
 <EventConsole @ref=@console />
 
 @code {
-    RadzenScheduler<Data.AppointmentData> scheduler;
+    RadzenScheduler<Data.ScheduleData> scheduler;
     EventConsole console;
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
@@ -24,7 +24,7 @@
         using var dbContext = await DbFactory.CreateDbContextAsync();
     }
 
-    IList<Data.AppointmentData> appointments = new List<Data.AppointmentData>
+    IList<Data.ScheduleData> appointments = new List<Data.ScheduleData>
     {
         // new Data.AppointmentData { Start = DateTime.Today.AddDays(-2), End = DateTime.Today.AddDays(-2), Text = "Birthday" },
         // new Data.AppointmentData { Start = DateTime.Today.AddDays(-11), End = DateTime.Today.AddDays(-10), Text = "Day off" },
@@ -56,28 +56,28 @@
 
         if (args.View.Text != "Year")
         {
-            // Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
-            //     new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+            Data.ScheduleData data = await DialogService.OpenAsync<AddSchedulePage>("Add Appointment",
+                new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
 
-            // if (data != null)
-            // {
-            //     appointments.Add(data);
-            //     // Either call the Reload method or reassign the Data property of the Scheduler
-            //     await scheduler.Reload();
-            // }
+            if (data != null)
+            {
+                appointments.Add(data);
+                // Either call the Reload method or reassign the Data property of the Scheduler
+                await scheduler.Reload();
+            }
         }
     }
 
-    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Data.AppointmentData> args)
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Data.ScheduleData> args)
     {
         console.Log($"AppointmentSelect: Appointment={args.Data.Text}");
 
-        // await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
+        await DialogService.OpenAsync<EditSchedulePage>("Edit Appointment", new Dictionary<string, object> { { "ScheduleData", args.Data } });
 
         await scheduler.Reload();
     }
 
-    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Data.AppointmentData> args)
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Data.ScheduleData> args)
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
