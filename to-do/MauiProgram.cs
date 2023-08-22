@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Radzen;
 using to_do.Data;
+using to_do.Layers._2.Application;
 using to_do.Layers._4.Infrastructure;
 
 namespace to_do;
@@ -29,6 +30,8 @@ public static class MauiProgram
         builder.Services.AddScoped<TooltipService>();
         builder.Services.AddScoped<ContextMenuService>();
         builder.Services.AddDbContextFactory<AppDbContext>();
+        builder.Services.AddTransient<ScheduleRepository>();
+        builder.Services.AddTransient<ScheduleApplicationService>();
 
         return builder.Build();
     }

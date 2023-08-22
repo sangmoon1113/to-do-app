@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 namespace to_do.Layers._4.Infrastructure;
 
 [Table("appointment")]
-public class AppointmentEntity
+public class ScheduleEntity
 {
+    [Key]
     [Column("key")]
     public string? Key
     {
@@ -35,7 +37,7 @@ public class AppointmentEntity
     }
 
     [Column("data")]
-    public object? Data
+    public string? Data
     {
         get; set;
     }

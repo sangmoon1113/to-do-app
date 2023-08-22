@@ -2,9 +2,11 @@
 
 @using Microsoft.EntityFrameworkCore;
 @using to_do.Data;
+@using to_do.Layers._2.Application;
 @using to_do.Layers._4.Infrastructure;
 @inject DialogService DialogService
 @inject IDbContextFactory<AppDbContext> DbFactory
+@inject ScheduleApplicationService ScheduleApplicationService
 
 <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Data.ScheduleData" Data=@appointments StartProperty="Start" EndProperty="End"
     TextProperty="Text" SelectedIndex="0" 
@@ -22,18 +24,12 @@
     protected override async Task OnInitializedAsync()
     {
         using var dbContext = await DbFactory.CreateDbContextAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+
+        appointments = await ScheduleApplicationService.GetAllSchedulesAsync();
     }
 
-    IList<Data.ScheduleData> appointments = new List<Data.ScheduleData>
-    {
-        // new Data.AppointmentData { Start = DateTime.Today.AddDays(-2), End = DateTime.Today.AddDays(-2), Text = "Birthday" },
-        // new Data.AppointmentData { Start = DateTime.Today.AddDays(-11), End = DateTime.Today.AddDays(-10), Text = "Day off" },
-        // new Data.AppointmentData { Start = DateTime.Today.AddDays(-10), End = DateTime.Today.AddDays(-8), Text = "Work from home" },
-        // new Data.AppointmentData { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(12), Text = "Online meeting" },
-        // new Data.AppointmentData { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(13), Text = "Skype call" },
-        // new Data.AppointmentData { Start = DateTime.Today.AddHours(14), End = DateTime.Today.AddHours(14).AddMinutes(30), Text = "Dentist appointment" },
-        // new Data.AppointmentData { Start = DateTime.Today.AddDays(1), End = DateTime.Today.AddDays(12), Text = "Vacation" },
-    };
+    List<Data.ScheduleData> appointments = new();
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -62,6 +58,9 @@
             if (data != null)
             {
                 appointments.Add(data);
+
+                await ScheduleApplicationService.AddSchedulesAsync(data);
+
                 // Either call the Reload method or reassign the Data property of the Scheduler
                 await scheduler.Reload();
             }
@@ -73,6 +72,8 @@
         console.Log($"AppointmentSelect: Appointment={args.Data.Text}");
 
         await DialogService.OpenAsync<EditSchedulePage>("Edit Appointment", new Dictionary<string, object> { { "ScheduleData", args.Data } });
+
+        await ScheduleApplicationService.UpdateSchedulesAsync(args.Data);
 
         await scheduler.Reload();
     }
