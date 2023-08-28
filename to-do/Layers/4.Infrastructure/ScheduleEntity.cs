@@ -24,20 +24,20 @@ public class ScheduleEntity
         get; set;
     }
 
-    [Column("end")]
-    public DateTime? End
+    [Column("finish")]
+    public DateTime? Finish
     {
         get; set;
     }
 
-    [Column("text")]
-    public string? Text
+    [Column("title")]
+    public string? Title
     {
         get; set;
     }
 
-    [Column("data")]
-    public string? Data
+    [Column("description")]
+    public string? Description
     {
         get; set;
     }

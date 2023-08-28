@@ -8,9 +8,10 @@
 @inject IDbContextFactory<AppDbContext> DbFactory
 @inject ScheduleApplicationService ScheduleApplicationService
 
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Data.ScheduleData" Data=@appointments StartProperty="Start" EndProperty="End"
-    TextProperty="Text" SelectedIndex="0" 
+<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Data.ScheduleData" Data=@appointments StartProperty="Start" EndProperty="Finish"
+    TextProperty="Title" SelectedIndex="1" 
     SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+    <RadzenWeekView />
     <RadzenMonthView />
 </RadzenScheduler>
 
@@ -48,12 +49,12 @@
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-        console.Log($"SlotSelect: Start={args.Start} End={args.End}");
+        console.Log($"SlotSelect: Start={args.Start} Finish={args.End}");
 
         if (args.View.Text != "Year")
         {
             Data.ScheduleData data = await DialogService.OpenAsync<AddSchedulePage>("Add Appointment",
-                new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+                new Dictionary<string, object> { { "Start", args.Start }, { "Finish", args.End } });
 
             if (data != null)
             {
@@ -69,7 +70,7 @@
 
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Data.ScheduleData> args)
     {
-        console.Log($"AppointmentSelect: Appointment={args.Data.Text}");
+        console.Log($"AppointmentSelect: Appointment={args.Data.Title}");
 
         await DialogService.OpenAsync<EditSchedulePage>("Edit Appointment", new Dictionary<string, object> { { "ScheduleData", args.Data } });
 
@@ -82,7 +83,7 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-        if (args.Data.Text == "Birthday")
+        if (args.Data.Title == "Birthday")
         {
             args.Attributes["style"] = "background: red";
         }

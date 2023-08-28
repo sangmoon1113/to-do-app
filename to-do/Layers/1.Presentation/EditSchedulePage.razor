@@ -4,11 +4,11 @@
 <RadzenTemplateForm TItem="ScheduleData" Data="@model" Submit=@OnSubmit>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="Text" />
+            <RadzenLabel Text="Title" />
         </div>
         <div class="col">
-            <RadzenTextBox @bind-Value="@model.Text" Name="Text" AutoComplete="false" />
-            <RadzenRequiredValidator Text="Title is required" Component="Text" />
+            <RadzenTextBox @bind-Value="@model.Title" Name="Title" AutoComplete="false" />
+            <RadzenRequiredValidator Text="Title is required" Component="Title" />
         </div>
     </div>
     <div class="row" style="margin-bottom: 16px">
@@ -16,17 +16,17 @@
             <RadzenLabel Text="Start" />
         </div>
         <div class="col">
-            <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="false" DateFormat="yyyy-MM-dd" />
+            <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" ShowTimeOkButton="true" DateFormat="yyyy-MM-dd HH:mm" />
             <RadzenRequiredValidator Text="Start is required" Component="Start" />
         </div>
     </div>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="End" />
+            <RadzenLabel Text="Finish" />
         </div>
         <div class="col">
-            <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="false" DateFormat="yyyy-MM-dd" />
-            <RadzenRequiredValidator Component="End" Text="End is required" />
+            <RadzenDatePicker Name="Finish" @bind-Value="@model.Finish" ShowTime="true" ShowTimeOkButton="true" DateFormat="yyyy-MM-dd HH:mm" />
+            <RadzenRequiredValidator Component="Finish" Text="Finish is required" />
         </div>
     </div>
     <div class="row">

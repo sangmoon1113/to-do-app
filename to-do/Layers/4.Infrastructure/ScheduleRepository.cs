@@ -22,9 +22,9 @@ public class ScheduleRepository
         {
             Key = x.Key,
             Start = x.Start,
-            End = x.End,
-            Data = x.Data,
-            Text = x.Text,
+            Finish = x.Finish,
+            Description = x.Description,
+            Title = x.Title,
         }).ToListAsync();
     }
 
@@ -33,9 +33,9 @@ public class ScheduleRepository
         await _appDbContext.Schedules.AddAsync(new ScheduleEntity { 
             Key = data.Key,
             Start = data.Start, 
-            End = data.End,
-            Data = data.Data,
-            Text = data.Text,
+            Finish = data.Finish,
+            Description = data.Description,
+            Title = data.Title,
         });
 
         await _appDbContext.SaveChangesAsync();
@@ -47,9 +47,9 @@ public class ScheduleRepository
         if (entity != null)
         {
             entity.Start = data.Start;
-            entity.End = data.End;
-            entity.Text = data.Text;
-            entity.Data = data.Data;
+            entity.Finish = data.Finish;
+            entity.Title = data.Title;
+            entity.Description = data.Description;
 
             await _appDbContext.SaveChangesAsync();
         }

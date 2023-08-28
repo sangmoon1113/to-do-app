@@ -11,23 +11,21 @@ public class ScheduleData
 
     public DateTime? Start { get; set; }
 
-    public DateTime? End { get; set; }
+    public DateTime? Finish { get; set; }
 
-    public string? Text { get; set; }
+    public string? Title { get; set; }
 
-    public string? Data { get; set; }
+    public string? Description { get; set; }
 
     public override bool Equals(object obj)
     {
         return obj is ScheduleData data &&
-               Start == data.Start &&
-               End == data.End &&
-               Text == data.Text &&
-               EqualityComparer<object>.Default.Equals(Data, data.Data);
+               Key == data.Key &&
+               EqualityComparer<string?>.Default.Equals(Key, data.Key);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Start, End, Text, Data);
+        return HashCode.Combine(Key);
     }
 }
